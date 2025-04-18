@@ -62,7 +62,6 @@ const subSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 // available checkings in schema
 // type, required, min, max, unique, enum, validate(), minLength, maxLength, match[/regex/] , ref(Id), index, default, trim,
 subSchema.pre("save", function (next) {
@@ -83,5 +82,4 @@ subSchema.pre("save", function (next) {
   }
   next();
 });
-
-export default subSchema;
+export const SubscriptionModel = mongoose.model("Subscription", subSchema);
