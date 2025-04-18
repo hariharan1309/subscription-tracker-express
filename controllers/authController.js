@@ -15,7 +15,7 @@ export const signUp = async (req, res, next) => {
     if (existingUser) {
       let error = new Error("User Already Exists");
       error.statusCode = 409;
-      next(error);
+      throw error;
     }
     // creating a new user
     let salt = await bcrypt.genSalt(10);
@@ -49,5 +49,32 @@ export const signUp = async (req, res, next) => {
     next(error);
   }
 };
-export const login = async (req, res, next) => {};
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      let error = new Error("User Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password); // compaing the hashed password
+    if (!isPasswordValid) {
+      let error = new Error("Invalid Password");
+      error.statusCode = 401;
+      throw error;
+    }
+    //  if Success
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1d",
+    }); // generating similar with respective userId in the data.
+    res.status(200).json({
+      success: true,
+      message: "Login Successful",
+      data: { user, token },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const logout = async (req, res, next) => {};
