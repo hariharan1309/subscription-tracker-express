@@ -1,6 +1,6 @@
-import User from "../db/models/user";
+import User from "../db/models/user.js";
 
-const getUsers = async (req, res, next) => {
+export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.status(200).json({ success: true, data: users });
@@ -10,7 +10,7 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const getUser = async (req, res, next) => {
+export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
     if (!user) {
