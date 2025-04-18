@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false })); // for handling form data inpu
 app.use(cookieParser);
 
 // custom middlewares
-app.use(errorHandler);
+app.use(errorHandler);  
 
 app.listen(PORT, async () => {
   console.log(`The PORT is running in ${PORT}`);
