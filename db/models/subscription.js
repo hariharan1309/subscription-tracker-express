@@ -82,4 +82,5 @@ subSchema.pre("save", function (next) {
   }
   next();
 });
-export const Subscription = mongoose.model("Subscription", subSchema);
+const Subscription = mongoose.model("Subscription", subSchema);
+export default Subscription;
