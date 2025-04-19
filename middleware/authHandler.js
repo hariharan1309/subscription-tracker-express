@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../db/models/user";
+import User from "../db/models/user.js";
 const authHandler = async (req, res, next) => {
   try {
     let token;
@@ -17,7 +17,7 @@ const authHandler = async (req, res, next) => {
       });
     }
     const userId = jwt.verify(token, process.env.JWT_SECRET_KEY); // encoded token with our token secret key
-    const user = await User.findById(userId);
+    const user = await User.findById(userId.id);
     if (!user) {
       return res.status(401).json({
         success: false,
