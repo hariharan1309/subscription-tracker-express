@@ -37,7 +37,7 @@ export const updateUser = async (req, res, next) => {
       user,
       {
         new: true, // instead of returning the prev non updated state it returns the data after Update.
-        // runValidators: true,
+        // runValidators: true, not validating as we aren't sending the password
       },
       { session: true } // session based transaction
     );
@@ -47,6 +47,8 @@ export const updateUser = async (req, res, next) => {
       throw error;
     }
     session.commitTransaction();
+    session.endSession();
+    res.status(200).json({ success: true, data: updatedUser });
   } catch (error) {
     console.log(error);
     session.abortTransaction();
