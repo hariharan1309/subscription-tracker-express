@@ -1,4 +1,6 @@
 import { Router } from "express";
+import authHandler from "../middleware/authHandler.js";
+import { createSubscription } from "../controllers/subControllers.js";
 
 const subRouter = Router();
 
@@ -16,9 +18,7 @@ subRouter.get("/user/:id", (req, res) => {
   res.json({ message: "Get Individual Subscription" });
 });
 
-subRouter.post("/", (req, res) => {
-  res.json({ message: "POST New Subscription" });
-});
+subRouter.post("/", authHandler, createSubscription);
 
 subRouter.put("/:id", (req, res) => {
   res.json({ message: "Update Subscription" });

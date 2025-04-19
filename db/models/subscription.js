@@ -45,7 +45,7 @@ const subSchema = new mongoose.Schema(
     },
     renewalDate: {
       type: Date,
-      required: true,
+      // required: true, // as it will be calculated automatically when not 
       validate: {
         validator: function (value) {
           value >= Date.now() && value > this.startDate;
