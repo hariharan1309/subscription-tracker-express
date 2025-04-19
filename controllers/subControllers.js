@@ -32,3 +32,74 @@ export const getUserSubscription = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getSubscription = async (req, res, next) => {
+  try {
+    const subId = req.params.id;
+    const subscription = await Subscription.findById(subId); // as we are already checking the user existence in the middlewaere
+    if (!subscription) {
+      let error = new Error("Subscription Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    if (req.user._id.toString() !== subscription.user.toString()) {
+      let error = new Error(" You are not the owner of this account");
+      error.statusCode = 401;
+      throw error;
+    }
+    res.status(200).json({ success: true, data: subscription });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getAllSubscriptions = async (req, res, next) => {
+  // we can add admin level restrcitions for this
+  try {
+    const subscriptions = await Subscription.find();
+    res.status(200).json({ success: true, data: subscriptions });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const updateSubscription = async (req, res, next) => {
+  try {
+    const subscription = req.body;
+    const subId = req.params.id;
+    const updatedSubscription = await Subscription.findByIdAndUpdate(
+      subId,
+      subscription,
+      {
+        new: true,
+      }
+    );
+    if (!updatedSubscription) {
+      let error = new Error("Subscription Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({ success: true, data: updatedSubscription });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const deleteSubscription = async (req, res, next) => {
+  try {
+    const subId = req.params.id;
+    const deleteSubscription = await Subscription.findByIdAndDelete(subId);
+    if (!deleteSubscription) {
+      let error = new Error("Subscription Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({ success: true, data: deleteSubscription });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

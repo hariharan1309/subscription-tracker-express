@@ -2,6 +2,7 @@ import { Router } from "express";
 import authHandler from "../middleware/authHandler.js";
 import {
   createSubscription,
+  getSubscription,
   getUserSubscription,
 } from "../controllers/subControllers.js";
 
@@ -13,9 +14,7 @@ subRouter.get("/", (req, res) => {
 subRouter.get("/upcoming-renewals", (req, res) => {
   res.json({ message: "Get AllUpcoming Renewal Subscriptions" });
 });
-subRouter.get("/:id", (req, res) => {
-  res.json({ message: "Get a Subscription" });
-});
+subRouter.get("/:id", authHandler, getSubscription);
 
 subRouter.get("/user/:id", authHandler, getUserSubscription); // getting user specific user subscription
 
