@@ -27,6 +27,7 @@ export const getUser = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
+  //  as we are making changes in the DB we are using transactions for atomicity
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -49,6 +50,28 @@ export const updateUser = async (req, res, next) => {
     session.commitTransaction();
     session.endSession();
     res.status(200).json({ success: true, data: updatedUser });
+  } catch (error) {
+    console.log(error);
+    session.abortTransaction();
+    session.endSession();
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const id = req.params.id;
+    const deleteUser = await User.findByIdAndDelete(id);
+    if (!deleteUser) {
+      let error = new Error("User Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    session.commitTransaction(); // making changes in the DB
+    session.endSession();
+    res.status(200).json({ success: true, message: "Deleted Successfully" });
   } catch (error) {
     console.log(error);
     session.abortTransaction();
