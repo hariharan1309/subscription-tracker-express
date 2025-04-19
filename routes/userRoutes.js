@@ -4,8 +4,11 @@ import { getUser, getUsers } from "../controllers/userController.js";
 const userRouter = Router();
 
 userRouter.get("/", getUsers);
+userRouter.get("/:id", getUser);
 
-userRouter.post("/", getUser);
+userRouter.post("/", (req, res) => {
+  res.json({ message: "POST New User" });
+});
 
 userRouter.put("/:id", (req, res) => {
   res.json({ message: "Update User" });
