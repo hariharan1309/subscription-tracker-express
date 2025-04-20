@@ -53,7 +53,7 @@ export const sendSubscriptionCreationEmail = async (user, subscription) => {
         <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <h3 style="margin-top: 0; color: #333;">Subscription Details:</h3>
           <p><strong>Name:</strong> ${subName}</p>
-          <p><strong>Price:</strong> $${price} (${capitalizedFrequency})</p>
+          <p><strong>Price:</strong> ${price} (${capitalizedFrequency})</p>
           <p><strong>Category:</strong> ${category}</p>
           <p><strong>Payment Method:</strong> ${paymentMethod}</p>
           <p><strong>Start Date:</strong> ${formattedStartDate}</p>
@@ -112,8 +112,9 @@ export const sendSubscriptionUpdateEmail = async (
     );
   }
   if (
+    oldSubscription?.renewalDate &&
     oldSubscription.renewalDate.toString() !==
-    subscription.renewalDate.toString()
+      subscription.renewalDate.toString()
   ) {
     const oldFormattedRenewalDate = new Date(
       oldSubscription.renewalDate
@@ -150,7 +151,7 @@ export const sendSubscriptionUpdateEmail = async (
         <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <h3 style="margin-top: 0; color: #333;">Current Subscription Details:</h3>
           <p><strong>Name:</strong> ${subName}</p>
-          <p><strong>Price:</strong> $${price} (${capitalizedFrequency})</p>
+          <p><strong>Price:</strong> ${price} (${capitalizedFrequency})</p>
           <p><strong>Status:</strong> ${
             status.charAt(0).toUpperCase() + status.slice(1)
           }</p>
@@ -201,7 +202,7 @@ export const sendSubscriptionCancellationEmail = async (
         <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <h3 style="margin-top: 0; color: #333;">Subscription Details:</h3>
           <p><strong>Name:</strong> ${subName}</p>
-          <p><strong>Price:</strong> $${price} (${capitalizedFrequency})</p>
+          <p><strong>Price:</strong> ${price} (${capitalizedFrequency})</p>
           ${isCancelled ? "<p><strong>Status:</strong> Cancelled</p>" : ""}
         </div>
         

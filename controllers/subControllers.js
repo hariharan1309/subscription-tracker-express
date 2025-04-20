@@ -75,9 +75,10 @@ export const updateSubscription = async (req, res, next) => {
   try {
     const subscription = req.body;
     const subId = req.params.id;
+    console.log(subscription);
     const updatedSubscription = await Subscription.findByIdAndUpdate(
       subId,
-      subscription,
+      { ...subscription },
       {
         new: true,
       }
@@ -87,7 +88,12 @@ export const updateSubscription = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    await sendSubscriptionUpdateEmail(req.user, updatedSubscription);
+    console.log(updatedSubscription);
+    await sendSubscriptionUpdateEmail(
+      req.user,
+      updatedSubscription,
+      subscription
+    );
     res.status(200).json({ success: true, data: updatedSubscription });
   } catch (error) {
     console.log(error);
@@ -142,7 +148,7 @@ export const upcomingRenewals = async (req, res, next) => {
 
 export const cancelSubscrition = async (req, res, next) => {
   try {
-    const subId = req.params.id; // getting the cancel subscription id
+    const subId = req.params?.id; // getting the cancel subscription id
     const subscription = await Subscription.findById(subId);
     if (!subscription) {
       let error = new Error("Subscription Not Found");
@@ -155,7 +161,7 @@ export const cancelSubscrition = async (req, res, next) => {
       throw error;
     }
     const cancelledSub = await Subscription.findByIdAndUpdate(
-      id,
+      subId,
       {
         status: "cancelled",
       },
