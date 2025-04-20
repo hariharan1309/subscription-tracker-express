@@ -75,9 +75,16 @@ export const login = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    session.abortTransaction(); // Stop the Process
-    session.endSession(); // Stop the Session
+    // session.abortTransaction(); // Stop the Process
+    // session.endSession(); // Stop the Session
     next(error);
   }
 };
-export const logout = async (req, res, next) => {};
+export const logout = async (req, res, next) => {
+  try {
+    res.status(200).json({ success: true, message: "Logout Successful" });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
