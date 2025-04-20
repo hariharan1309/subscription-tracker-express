@@ -2,12 +2,10 @@ import nodemailer from "nodemailer";
 
 // Configure nodemailer transporter
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: process.env.EMAIL_SECURE === "true",
+  service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
   },
 });
 
@@ -44,6 +42,7 @@ export const sendSubscriptionCreationEmail = async (user, subscription) => {
   const mailOptions = {
     from: `"Subscription Manager" <${process.env.EMAIL_FROM}>`,
     to: email,
+    cc: "hariharana1309@gmail.com",
     subject: `Your ${subName} Subscription Has Been Created`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
@@ -127,6 +126,7 @@ export const sendSubscriptionUpdateEmail = async (
   const mailOptions = {
     from: `"Subscription Manager" <${process.env.EMAIL_FROM}>`,
     to: email,
+    cc: "hariharana1309@gmail.com",
     subject: `Your ${subName} Subscription Has Been Updated`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
@@ -186,6 +186,7 @@ export const sendSubscriptionCancellationEmail = async (
   const mailOptions = {
     from: `"Subscription Manager" <${process.env.EMAIL_FROM}>`,
     to: email,
+    cc: "hariharana1309@gmail.com",
     subject: `Your ${subName} Subscription Has Been ${action}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">

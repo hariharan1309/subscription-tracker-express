@@ -1,10 +1,16 @@
 import Subscription from "../db/models/subscription.js";
+import {
+  sendSubscriptionCancellationEmail,
+  sendSubscriptionCreationEmail,
+  sendSubscriptionUpdateEmail,
+} from "../utils/nodemailer.js";
 export const createSubscription = async (req, res, next) => {
   try {
     const subscription = await Subscription.create({
       ...req.body, // utilizing the whole req body
       user: req.user._id, // we will get the user automatically by auth middleware user response
     });
+    await sendSubscriptionCreationEmail(req.user, subscription);
     res.status(201).json({ success: true, data: subscription });
   } catch (error) {
     next(error);
@@ -81,6 +87,7 @@ export const updateSubscription = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
+    await sendSubscriptionUpdateEmail(req.user, updatedSubscription);
     res.status(200).json({ success: true, data: updatedSubscription });
   } catch (error) {
     console.log(error);
@@ -103,6 +110,7 @@ export const deleteSubscription = async (req, res, next) => {
       throw error;
     }
     const deletedSubscription = await Subscription.findByIdAndDelete(subId);
+    await sendSubscriptionCancellationEmail(req.user, subscription, false);
     res.status(200).json({ success: true, data: deletedSubscription });
   } catch (error) {
     console.log(error);
@@ -146,7 +154,7 @@ export const cancelSubscrition = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
-    const updateSUbscription = await Subscription.findByIdAndUpdate(
+    const cancelledSub = await Subscription.findByIdAndUpdate(
       id,
       {
         status: "cancelled",
@@ -155,7 +163,8 @@ export const cancelSubscrition = async (req, res, next) => {
         new: true,
       }
     );
-    res.status(200).json({ success: true, data: updateSUbscription });
+    await sendSubscriptionCancellationEmail(req.user, subscription, true);
+    res.status(200).json({ success: true, data: cancelledSub });
   } catch (error) {
     console.log(error);
     next(error);
