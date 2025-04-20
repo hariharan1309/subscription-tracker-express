@@ -1,22 +1,21 @@
-# Subscription Management System using Express.js, MongoDB
-This project is a comprehensive subscription management system with user authentication, subscription handling, and robust error management. 
-The system allows users to sign up, log in, and manage their subscriptions with various features including upcoming renewal notifications and subscription status management.
+# Subscription Management System
 
-## User Authentication
+A comprehensive subscription management system built with Express.js and MongoDB with integrated email notifications.
 
-Sign up and login
-JWT-based authentication
-Protected routes
+## Features
+- **User Authentication**: JWT-based login/signup with protected routes
+- **Subscription Management**: Create, read, update, delete, and cancel subscriptions
+- **Email Notifications**: Automated emails for subscription events using Nodemailer
+- **Error Handling**: Centralized middleware with custom responses
 
-## Subscription Management
+## Tech Stack
+- Node.js/Express.js
+- MongoDB/Mongoose
+- JWT Authentication
+- Nodemailer
 
-Create, read, update, and delete subscriptions
-View subscription details
-Cancel subscriptions
-Track upcoming renewals
-
-## Error Handling
-
-Centralized error middleware
-Custom error responses
-Input validation
+## Email Features
+- Responsive HTML templates
+- Personalized subscription details
+- Change tracking for updates
+- Different templates for various subscription actions
